@@ -25,6 +25,3 @@ dist-ssr
 
 # Exclude pnpm
 pnpm-lock.yaml
-
-# Tailwind CSS output
-output.css
