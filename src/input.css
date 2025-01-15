@@ -1,0 +1,33 @@
+@tailwind base;
+@tailwind utilities;
+@tailwind components;
+
+:root {
+	--background: #ffffff;
+	--foreground: #171717;
+}
+
+@media (prefers-color-scheme: dark) {
+	:root {
+		--background: #09090b;
+		--foreground: #e4e4e7;
+	}
+}
+
+* {
+	font-family: "Inter", serif;
+
+	outline: 2px solid transparent;
+	outline-offset: 2px;
+}
+
+body {
+	color: var(--foreground);
+	background: var(--background);
+}
+
+@layer base {
+	font-mono {
+		font-family: "JetBrains Mono", monospace;
+	}
+}

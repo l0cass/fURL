@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/fURL.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>fURL – test API's</title>
+    <meta name="author" content="Lucas Piffer (Github: https://github.com/l0cass)" />
+
+    <meta name="robots" content="index, follow">
+
+    <meta
+      name="description"
+      content="fURL simplifies API testing, allowing developers to validate and debug their services with an easy-to-use interface."
+    />
+
+    <meta
+      name="keywords"
+      content="API testing, developer tools, test APIs, API validation, REST API testing, debug APIs"
+    />
+
+    <meta
+      property="og:title"
+      content="fURL - Fast and Easy API Testing Tool for Developers"
+    />
+    <meta
+      property="og:description"
+      content="fURL simplifies API testing for developers, providing a fast, reliable, and easy-to-use tool to validate and debug APIs efficiently."
+    />
+
+    <meta property="og:url" content="https://furl-tool.vercel.app/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="/api-testing-tool-thumbnail.jpg" />
+
+    <script type="module" src="/src/main.js"></script>
+
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap"
+    />
+  </head>
+  <body class="min-h-screen flex flex-col justify-between bg-background text-foreground">
+    <section>
+      <nav>
+        <form id="submitForm" autocomplete="off">
+          <span class="p-4 flex gap-2 flex-wrap items-center bg-zinc-700">
+            <select
+              id="methodSelect"
+              class="appearance-none w-full sm:w-[6rem] p-2 bg-zinc-800 text-center hover:bg-zinc-900 transition"
+              title="Describe the HTTP method to use for the API request."
+            >
+              <option value="GET" translate="no" selected>GET</option>
+              <option value="POST" translate="no">POST</option>
+              <option value="PUT" translate="no">PUT</option>
+              <option value="DELETE" translate="no">DELETE</option>
+            </select>
+            <div class="flex-1 flex flex-col sm:flex-row gap-2 sm:items-center">
+              <div class="w-full sm:w-fit flex gap-x-2 items-center">
+                <span class="hidden sm:block" translate="no">localhost:</span>
+                <input
+                  type="text"
+                  id="port"
+                  value="8000"
+                  class="w-full sm:w-[6rem] p-2 bg-zinc-800 text-center"
+                  minlength="4"
+                  maxlength="4"
+                  title="Please enter a 4-digit number"
+                  placeholder="Enter local port"
+                  required
+                />
+              </div>
+              <span class="hidden sm:block" translate="no">/</span>
+              <input
+                type="text"
+                id="route"
+                class="flex-1 p-2 px-4 bg-zinc-800"
+                maxlength="2048"
+                spellcheck="false"
+                title="Specify the API endpoint"
+                placeholder="API route here"
+                required
+              />
+            </div>
+            <button
+              type="submit"
+              class="w-full md:w-[6rem] p-2 bg-rose-600 hover:bg-rose-500 transition"
+              title="Submit API Request"
+            >
+              Submit
+            </button>
+          </span>
+        </form>
+        <header>
+          <div
+            class="p-4 flex gap-x-4 bg-zinc-700 *:w-full *:p-2 *:px-4 *:bg-zinc-800 *:text-center hover:*:bg-zinc-900 *:transition"
+          >
+            <button id="handleBody" class="hidden isRequestWithData">Body</button>
+            <button id="handleHeader">Header</button>
+          </div>
+        </header>
+      </nav>
+
+      <div id="bodySection" class="hidden isRequestWithData bg-zinc-800">
+        <div class="w-full p-2 pl-4 bg-zinc-900">Body</div>
+
+        <div class="p-4 flex gap-4 items-center justify-center *:w-full">
+          <div id="propertiesContainer" class="max-w-lg flex flex-col gap-2">
+
+            <button
+              type="submit"
+              id="add-property"
+              class="max-w-lg p-2 bg-zinc-600 hover:bg-zinc-900 transition"
+              title="Add a new property to the JSON body"
+            >
+              Add Property
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div id="headerSection" class="bg-zinc-800">
+        <div class="w-full p-2 pl-4 bg-zinc-900">Header</div>
+
+        <div class="p-4 grid gap-4 grid-cols-1 md:grid-cols-2">
+          <div
+            class="flex flex-col gap-4 items-center justify-start border-b-2 pb-4 md:border-b-transparent border-b-zinc-700 *:w-full"
+          >
+            <select
+              id="contentTypeSelect"
+              class="appearance-none max-w-lg p-2 bg-zinc-700 hover:bg-zinc-900 transition"
+              title="Select the Content-Type for the API request."
+            >
+              <option value="application/json" translate="no" selected>
+                Content-Type: application/json
+              </option>
+              <option value="multipart/form-data" translate="no">
+                Content-Type: multipart/form-data
+              </option>
+            </select>
+          </div>
+
+          <div class="flex flex-col gap-4 items-center justify-start *:w-full">
+            <input
+              type="text"
+              id="accessToken"
+              class="max-w-lg p-2 bg-zinc-700"
+              placeholder="Enter your JWT here"
+              title="Enter your JWT for authentication"
+            />
+
+            <label
+              class="cursor-pointer block max-w-lg px-4 py-2 bg-zinc-600 hover:bg-zinc-900 transition"
+              title="Select a file to upload"
+
+            >
+              <input
+                type="file"
+                id="fileInput"
+                class="hidden"
+              />
+              <span id="fileName">No file selected</span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="p-10">
+        <div
+          id="responseContainer"
+          class="w-full p-4 bg-zinc-800"
+        ></div>
+      </div>
+    </section>
+
+    <footer class="bg-zinc-800 text-center p-4">
+      <p>&copy; 2025 Lucas Piffer. All rights reserved.</p>
+      <p>
+        <a href="https://github.com/l0cass" class="text-rose-600 hover:text-rose-500 transition">
+          GitHub: l0cass
+        </a>
+      </p>
+    </footer>
+  </body>
+</html>
